@@ -36,9 +36,12 @@
 <div class="header">
 	<div class="container">
 		<div class="logo wow fadeInDown animated" data-wow-delay=".5s">
-			<a href="index.php">KARNATAKA Tourism </span></a>
+			<a href="index.php">KARNATAKA TOURISM </span></a>
 		</div>
-
+		<div style="width:200px;float:right" class="col-2">
+			<div id="google_translate_element">
+			</div>
+		</div>
 
 		<div class="clearfix"></div>
 	</div>
@@ -60,20 +63,31 @@
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
-					<nav class="cl-effect-1">
+					<nav class="navbar navbar-expand-lg ">
 						<ul class="nav navbar-nav">
 							<li><a href="index.php">Home</a></li>
 							<li><a href="#">About</a></li>
-							<li><a href="package-list.php">Tour Packages</a></li>
+							<li><a href="package-list.php">Select District</a></li>
 							<li><a href="#">Privacy Policy</a></li>
 							<li><a href="#">Terms of Use</a></li>
 							<li><a href="#">Contact Us</a></li>
 							<?php if ($_SESSION['login']) { ?>
 								<li>Need Help?<a href="#" data-toggle="modal" data-target="#myModal3"> / Write Us </a> </li>
+
 							<?php } else { ?>
 								<li><a href="enquiry.php"> Enquiry </a> </li>
 							<?php } ?>
 							<div class="clearfix"></div>
+
+							<script type="text/javascript">
+								function googleTranslateElementInit() {
+									new google.translate.TranslateElement({
+										pageLanguage: 'en'
+									}, 'google_translate_element');
+								}
+							</script>
+
+							<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 						</ul>
 					</nav>

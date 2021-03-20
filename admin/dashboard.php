@@ -41,15 +41,20 @@
     <link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <!-- lined-icons -->
     <link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- //lined-icons -->
 </head>
 
 <body>
-    <?php require './admin_navbar.php' ?>
+    <?php
+    session_start();
+    require './admin_navbar.php' ?>
     <?php
     require '.././includes/db.php';
     require '.././includes/config.php';
     $name = $_SESSION['name'];
+
+
     ?>
 
     <div id="head">
@@ -125,7 +130,7 @@
                     </div>
                     <div class="four-text">
                         <h3>Toatal packages</h3>
-                        <?php $sql3 = "SELECT PackageId from tbltourpackages";
+                        <?php $sql3 = "SELECT p_id from packages";
                         $query3 = $dbh->prepare($sql3);
                         $query3->execute();
                         $results3 = $query3->fetchAll(PDO::FETCH_OBJ);

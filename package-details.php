@@ -1,47 +1,10 @@
 <?php
-session_start();
-error_reporting(0);
-include('includes/db.php');
-require "./Phpmailer/class.phpmailer.php";
-require "./Phpmailer/class.smtp.php";
-require './files/functions.php';
-if (isset($_POST['submit2'])) {
-	$pid = intval($_GET['pkgid']);
-	$useremail = $_SESSION['login'];
-	$fromdate = $_POST['fromdate'];
-	// $todate = $_POST['todate'];
-	$comment = $_POST['comment'];
-	$status = 0;
-	$sql = "INSERT INTO tblbooking(PackageId,UserEmail,FromDate,Todate,Comment,status) VALUES('$pid','$useremail','$fromdate','','$comment','$status')";
-	$lastInsertId = mysqli_query($conn, $sql);
+include './booked_insert.php';
 
-	if ($lastInsertId) {
-		$res = mysqli_query($conn, "Select * from packages where p_id = '$pid'");
-		$ar = $res->fetch_assoc();
-		$pname = $ar['pname'];
-		$msg = "Booked Successfully";
-		$subject = "Package Booked Successfully";
-		$content = "<html>
-		<body>
-		<table>
-		<tr>
-		<th>Package ID </th>
-		<td>$pid</td>
-		</tr>
-		
-		<tr>
-		<th>Package Name</th>
-		<td>$pname</td>
-		</tr>
-		</table>
-		</body>
-		";
-		phpmailsend($useremail, $subject, $content);
-	} else {
-		$error = "Something went wrong. Please try again";
-	}
-}
+
 ?>
+
+
 <!DOCTYPE HTML>
 <html>
 
@@ -49,6 +12,8 @@ if (isset($_POST['submit2'])) {
 	<title>Package Details</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 	<script type="applijewelleryion/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
 	<link href="css/style.css" rel='stylesheet' type='text/css' />
@@ -63,10 +28,19 @@ if (isset($_POST['submit2'])) {
 	<link href="css/animate.css" rel="stylesheet" type="text/css" media="all">
 	<script src="js/wow.min.js"></script>
 	<link rel="stylesheet" href="css/jquery-ui.css" />
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 	<script>
 		new WOW().init();
 	</script>
 	<style>
+		#gridview {
+			text-align: center;
+		}
+
 		.errorWrap {
 			padding: 10px;
 			margin: 0 0 20px 0;
@@ -74,6 +48,15 @@ if (isset($_POST['submit2'])) {
 			border-left: 4px solid #dd3d36;
 			-webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
 			box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+		}
+
+		.heading {
+			padding: 10px 10px;
+			border-radius: 2px;
+			color: #FFF;
+			background: #6aadf1;
+			margin-bottom: 10px;
+			font-size: 1.5em;
 		}
 
 		.succWrap {
@@ -97,66 +80,44 @@ if (isset($_POST['submit2'])) {
 	</div>
 	<!--- /banner ---->
 	<!--- selectroom ---->
+
 	<div class="selectroom">
 		<div class="container">
 			<?php if ($error) { ?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } else if ($msg) { ?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php } ?>
 			<?php
 			$pid = intval($_GET['pkgid']);
+			$ptype = $_GET['ptype'];
 			$sql = "SELECT p.*,pd.* from packages p,package_details pd where p.p_id=pd.p_id and p.p_id ='$pid'";
 			$query = mysqli_query($conn, $sql);
 			$cnt = 1;
+
 			if (mysqli_num_rows($query) > 0) {
 				while ($result = $query->fetch_assoc()) {	?>
-
-					<form name="book" method="post">
-						<div class="selectroom_top">
-							<div class="col-md-4 selectroom_left wow fadeInLeft animated" data-wow-delay=".5s">
-								<img src="admin/pacakgeimages/<?php $arr = explode("../", htmlentities($result['image']));
-																$imagepath = $arr[1];
-
-																echo $imagepath ?> ?>" class="img-responsive" alt="">
-							</div>
-							<div class="col-md-8 selectroom_right wow fadeInRight animated" data-wow-delay=".5s">
-								<h2><?php echo htmlentities($result['pname']); ?></h2>
-								<!-- <p class="dow">#PKG-<?php echo htmlentities($result['p_id']); ?></p> -->
-								<!-- <p><b>Package Type :</b> <?php echo htmlentities($result['PackageType']); ?></p> -->
-								<p><b>Package Location :</b> <?php echo htmlentities($result['[PackageLocation']); ?></p>
-								<p><b>Description</b> <?php echo htmlentities($result['description']); ?></p>
-								<p><b>Days</b> <?php echo htmlentities($result['no_of_days']); ?></p>
-								<p><b>Places</b> <?php echo htmlentities($result['name_place']); ?></p>
-								<div class="clearfix"></div>
-								<div class="grand">
-									<p>Grand Total</p>
-									<h3>Rs.<?php echo htmlentities($result['price']) ?></h3>
-								</div>
-							</div>
-							<h3>Package Details</h3>
-							<p style="padding-top: 1%"><?php echo htmlentities($result['about_packages']); ?> </p>
-							<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 mb-3 selectroom_right wow fadeInRight animated" data-wow-delay=".5s">
+							<h2 class="text-center"><?php echo htmlentities($result['pname']); ?></h2>
 						</div>
-						<div class="selectroom_top">
-							<h2>Travels</h2>
-							<div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
-								<ul>
+					</div>
+					<div class="selectroom_top">
+						<?php
+						$image_fetch = mysqli_query($conn, "SELECT image  from images where p_id='$pid'");
+						while ($row = $image_fetch->fetch_assoc()) {
+						?><div class="col-md-4 selectroom_left wow fadeInLeft animated" data-wow-delay=".5s">
+								<?php
+								$imagepath = "uploads/images/$ptype/" . $row['image'] . "";
 
-									<li class="spe">
-										<label class="inputLabel">Comment</label>
-										<input class="special" type="text" name="comment" required="">
-									</li>
-									<?php if ($_SESSION['login']) { ?>
-										<li class="spe" align="center">
-											<button type="submit" name="submit2" class="btn-primary btn">Book</button>
-										</li>
-									<?php } else { ?>
-										<li class="sigi" align="center" style="margin-top: 1%">
-											<a href="#" data-toggle="modal" data-target="#myModal4" class="btn-primary btn"> Book</a>
-										</li>
-									<?php } ?>
-									<div class="clearfix"></div>
-								</ul>
+								?><img src="<?php echo $imagepath ?> ?>" class="img-responsive" alt="">
 							</div>
+						<?php
+						}
+						?>
 
-						</div>
+						<p style="padding-top: 1%"><?php echo htmlentities($result['about_packages']); ?> </p>
+						<div class="clearfix"></div>
+					</div>
+					<div id="gridview">
+						<div class="heading">Image Gallery</div>
+					</div>
 					</form>
 			<?php }
 			} ?>

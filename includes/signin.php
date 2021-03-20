@@ -9,7 +9,7 @@ if (isset($_POST['login'])) {
 	$res = mysqli_query($conn, $sql);
 	if ($res) {
 		$_SESSION['login'] = $email;
-		echo "<script>alert('Login successfull..');
+		echo "<script>;
               window.location='package-details.php'
               </script>";
 	} else {

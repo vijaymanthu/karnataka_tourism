@@ -1,7 +1,3 @@
-<?php
-
-session_start();
-?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary ">
     <div class="container">
         <a class="navbar-brand" href="#">KARNATAKA TOURISM </a>
@@ -11,7 +7,7 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ">
-                    <a class="nav-link" href="./admin.php">Home
+                    <a class="nav-link" href="./dashboard.php">Home
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>

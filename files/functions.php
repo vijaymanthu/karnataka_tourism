@@ -24,7 +24,7 @@ function phpmailsend($to, $subject, $content)
     if (!$mail->Send()) {
         echo $mail->ErrorInfo;
     } else {
-        //echo "sent";
+        return true;
     }
 }
 ?>

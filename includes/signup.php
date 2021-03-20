@@ -7,21 +7,34 @@ if (isset($_POST['save'])) {
 	$mobile_no = $_POST['mobile_no'];
 	$pass = $_POST['pass'];
 	$cpass = $_POST['cpass'];
-
+	$flag = true;
 	if ($pass  != $cpass) {
-		echo "<script>alert('Password Does not Match');
-              window.location='./index.php'
+		$flag = false;
+		echo "<script>Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: 'Invalid Password!',
+  footer: '<a href>Password Should be Match</a>'
+});
+              //window.location='./index.php'
               </script>";
 	}
-
-	$sql = "insert into register(fname,lname,mobile_no,password,email_id) values('$fname','$lname','$mobile_no','$pass','$email')";
-	$res = mysqli_query($conn, $sql);
-	if ($res) {
-		echo "<script>alert('Register successfull..');
-              window.location='./index.php'
+	if ($flag) {
+		$sql = "insert into register(fname,lname,mobile_no,password,email_id) values('$fname','$lname','$mobile_no','$pass','$email')";
+		$res = mysqli_query($conn, $sql);
+		if ($res) {
+			echo "<script>Swal.fire({
+  position: 'top',
+  icon: 'success',
+  title: 'Successfully Registered',
+  showConfirmButton: true,
+  timer: 1500
+});
+              //window.location='./index.php'
               </script>";
-	} else {
-		echo mysqli_error($conn);
+		} else {
+			echo mysqli_error($conn);
+		}
 	}
 }
 
@@ -85,10 +98,15 @@ if (isset($_POST['save'])) {
 
 					</div>
 					<div class="form-group row">
+						<strong style="margin-left:20px" id="result"></strong>
+					</div>
+					<div class="form-group row">
 						<label for="type" class="col-4 col-sm-4"> Confirm Password</label>
 						<input class="form-control col-sm-7 col-7" type="text" name="cpass" required id="cpass">
 						<label id="message2" class="col-7 col-sm-7 text-danger"></label>
+
 					</div>
+
 
 					<div class="form-group">
 						<button class="btn btn-success offset-4" id="save" name="save">Register</button>
