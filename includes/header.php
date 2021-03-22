@@ -4,9 +4,8 @@
 			<ul class="tp-hd-lft wow fadeInLeft animated" data-wow-delay=".5s">
 				<li class="hm"><a href="index.html"><i class="fa fa-home"></i></a></li>
 				<li class="prnt"><a href="profile.php">My Profile</a></li>
-				<li class="prnt"><a href="change-password.php">Change Password</a></li>
+				<li class="prnt"><a href="cplogin.php">Change Password</a></li>
 				<li class="prnt"><a href="tour-history.php">My Tour History</a></li>
-				<li class="prnt"><a href="issuetickets.php">Issue Tickets</a></li>
 			</ul>
 			<ul class="tp-hd-rgt wow fadeInRight animated" data-wow-delay=".5s">
 				<li class="tol">Welcome :</li>
@@ -23,7 +22,6 @@
 				<li class="hm"><a href="admin/">Admin Login</a></li>
 			</ul>
 			<ul class="tp-hd-rgt wow fadeInRight animated" data-wow-delay=".5s">
-				<li class="tol">Toll Number : 123-4568790</li>
 				<li class="text-light"><a href="#" data-toggle="modal" data-target="#myModal">Sign Up</a></li>
 				<li class="text-light"><a href="#" data-toggle="modal" data-target="#myModal4">/ Sign In</a></li>
 			</ul>

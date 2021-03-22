@@ -3,17 +3,23 @@ session_start();
 if (isset($_POST['login'])) {
 
 	$email = $_POST['email_id'];
-	$_SESSION['email'] = $email;
 	$pass = $_POST['pass'];
 	$sql = "Select * from register where email_id='$email' and password = '$pass'";
 	$res = mysqli_query($conn, $sql);
-	if ($res) {
+	if (mysqli_num_rows($res) > 0) {
 		$_SESSION['login'] = $email;
+
+		$_SESSION['email'] = $email;
 		echo "<script>;
               window.location='package-details.php'
               </script>";
 	} else {
-		echo mysqli_error($conn);
+		echo "<script>Swal.fire({
+  icon: 'error',
+  title: 'Oops...',
+  text: 'Invalid Credentials!'
+});
+</script>";
 	}
 }
 ?>

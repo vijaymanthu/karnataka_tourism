@@ -6,11 +6,21 @@ require '.././includes/db.php';
 
 if (isset($_POST['operation'])) {
     if ($_POST['operation'] == "add_district") {
-        $dn = $_POST['dist_name'];
+        $add_d = false;
         $p_type = $_POST['p_type'];
         $pr = $_POST['price'];
-        $add_d = mysqli_query($conn, "INSERT INTO district(dist_name,p_type,price) VALUES('$dn','$p_type','$pr')");
-        if ($add_d) $data = "success";
+        $nod = $_POST['nod'];
+        if ($_POST['dist_name'] == "others") {
+            $dn = $_POST['text_dist_name'];
+            $add_d = mysqli_query($conn, "INSERT INTO district(dist_name) VALUES('$dn')");
+        }
+        if ($add_d)
+            $dist_id = mysqli_insert_id($conn);
+        else
+            $dist_id = $_POST['dist_name'];
+        $add_details = mysqli_query($conn, "INSERT INTO `district_package_details`(`dist_id`, `p_type`, `price`, `no_of_days`) values('$dist_id','$p_type','$pr','$nod')");
+        if ($add_details)
+            $data = "success";
         //$data = array('responce' => 'success');
         else
             $data = "fail";
@@ -22,7 +32,7 @@ if (isset($_POST['operation'])) {
 
     if ($_POST['operation'] == 'fetch') {
 
-        $fetch_dist = mysqli_query($conn, "SELECT dist_name,p_type,price from district");
+        $fetch_dist = mysqli_query($conn, "SELECT d.dist_name,details.p_type,details.price from district d,district_package_details details where d.id=details.dist_id");
         if (mysqli_num_rows($fetch_dist) > 0)
             $data = array('responce' => 'success', 'fetch' => $fetch_dist->fetch_all());
         else

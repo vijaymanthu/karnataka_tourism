@@ -58,8 +58,7 @@ if (isset($_POST['login'])) {
                     <button type="submit" name="login" class="btn btn-primary">Login</button>
                     <hr />
                     <!-- <button type="button" class="btn btn-link">Signup</button> -->
-                    <button type="button" class="btn btn-link">Reset Password</button>
-
+                  
                 </form>
 
             </div>

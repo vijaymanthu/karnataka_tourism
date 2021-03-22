@@ -81,7 +81,7 @@ if (isset($_POST['save'])) {
 					</div>
 					<div class="form-group row">
 						<label for="type" class="col-4 col-sm-4">Mobile Number</label>
-						<input class="form-control col-sm-7 col-7" type="text" name="mobile_no">
+						<input class="form-control col-sm-7 col-7" required pattern="[7-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" type="text" name="mobile_no">
 
 					</div>
 

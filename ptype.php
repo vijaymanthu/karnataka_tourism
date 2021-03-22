@@ -11,13 +11,15 @@ $ptype = $_POST['ptype'];
 $sql = "SELECT * from packages where ptype='$ptype' and district_id='$dist_id'";
 $query = mysqli_query($conn, $sql);
 // $query->execute();
-$fetch_price = mysqli_query($conn, "SELECT price from district where id = '$dist_id' and p_type ='$ptype'");
+$fetch_price = mysqli_query($conn, "SELECT det.price,det.no_of_days from district d,`district_package_details` det where d.id = '$dist_id' and det.dist_id = d.id and det.p_type ='$ptype'");
 $pack_price = $fetch_price->fetch_assoc();
 ?><div class="row">
-    <div class="col">
-        <p class="danger h3" style="font-family:'Times New Roman', Times, serif">Rs. <?php echo $pack_price['price'] ?></p>
-    </div>
+    <a class="m-5 h3 offset-8" style="font-family:'Times New Roman', Times, serif"><strong class="text-info">No of Days :</strong> <?php echo $pack_price['no_of_days'] ?></a>
+
+    <a class="m-5 h3" style="float:right;font-family:'Times New Roman', Times, serif"><strong class="text-info">Price :</strong> Rs. <?php echo $pack_price['price'] ?>/-</a>
+
 </div>
+
 
 <?php
 $cnt = 1;
@@ -38,12 +40,12 @@ if (mysqli_num_rows($query) > 0) {
 
                                     ?></h4>
                 <!-- <h6>Package Type : <?php echo htmlentities($result['PackageType']); ?></h6> -->
-                <p><b>Package Location :</b> <?php echo htmlentities($result['PackageLocation']); ?></p>
+                <!-- <p><b>Package Location :</b> <?php echo htmlentities($result['PackageLocation']); ?></p> -->
                 <p><b>Package Description :</b> <?php echo htmlentities($result['description']); ?></p>
-                <!-- <p><b>Features</b> <?php echo htmlentities($result['packageFetures']); ?></p> -->
+                <p><b>Features</b> <?php echo htmlentities($result['about']); ?></p>
+
             </div>
             <div class="col-md-3 room-right wow fadeInRight animated" data-wow-delay=".5s">
-                <h5>Rupees <?php echo htmlentities($result['price']); ?></h5>
                 <a href="package-details.php?ptype=<?php echo htmlentities($result['ptype']) ?>&pkgid=<?php echo htmlentities($result['p_id']); ?>" class="view">Details</a>
             </div>
             <div class="clearfix"></div>
@@ -54,8 +56,8 @@ if (mysqli_num_rows($query) > 0) {
     <form name="book" action="./payment/pay.php" method="post">
         <input type="hidden" name="pname" value="<?php echo htmlentities($result['pname']); ?>">
         <input type="hidden" name="price" value="<?php echo htmlentities($pack_price['price']); ?>">
-        <input type="hidden" name="dist_id" value="<?php $dist_id = $_POST['dst_id']; ?>">
-        <input type="hidden" name="ptype" value="<?php $ptype = $_POST['ptype']; ?>">
+        <input type="hidden" name="dist_id" value="<?php echo $_POST['dst_id']; ?>">
+        <input type="hidden" name="ptype" value="<?php echo $_POST['ptype']; ?>">
         <div class="selectroom_top" style="margin: 30px;">
             <h2>Travel</h2>
             <div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
@@ -64,7 +66,7 @@ if (mysqli_num_rows($query) > 0) {
                     <li class="spe">
                         <label class="inputLabel">Date</label>
 
-                        <input class="form-control" type="date" name="date" min="<?php echo date("Y-m-d")?>" required="">
+                        <input class="form-control" type="date" name="date" min="<?php echo date("Y-m-d") ?>" required="">
 
                     </li>
                     <?php if ($_SESSION['login']) { ?>

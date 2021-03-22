@@ -1,3 +1,27 @@
+<?php
+require './includes/db.php';
+session_start();
+if (isset($_POST['change'])) {
+    $email = $_SESSION['login'];
+    $res = mysqli_query($conn, "select password from register where email_id = '$email'");
+    while ($row = mysqli_fetch_assoc($res))
+        $old_pass = $row['password'];
+    $pass = $_POST['pass'];
+    $entered_pass = $_POST['old_pass'];
+    if ($old_pass == $entered_pass) {
+        $res2 = mysqli_query($conn, "Update register set password = '$pass' where email_id = '$email' ");
+        if ($res2) {
+
+            echo "<script>alert('Password Changed Successfully..');
+              window.location='./index.php'
+              </script>";
+        }
+    }
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,31 +34,7 @@
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/login.css">
-
 </head>
-<?php
-require './includes/db.php';
-if (isset($_POST['change'])) {
-    $email = $_GET['email'];
-    $res = mysqli_query($conn, "select password from register where email_id = '$email'");
-    while ($row = mysqli_fetch_array($res))
-        $otp = $row['password'];
-    $pass = $_POST['pass'];
-    $opt_pass = $_POST['text_otp'];
-    if ($otp == $opt_pass) {
-        $res2 = mysqli_query($conn, "Update register set password = '$pass' where email_id = '$email' ");
-        if ($res2) {
-
-            echo "<script>alert('Password Changed Successfully');  window.location='./index.php'
-              </script>";
-        }
-    }
-}
-
-
-?>
-
-
 
 <body>
 
@@ -52,8 +52,8 @@ if (isset($_POST['change'])) {
                 <div id="change_pass">
                     <form method="post">
                         <div class="form-group">
-                            <label for="text_otp">OTP</label>
-                            <input type="text" class="form-control" id="text_otp" required name="text_otp" placeholder="Enter OTP">
+                            <label for="text_otp">Old Password</label>
+                            <input type="password" class="form-control" id="old_pass" required name="old_pass" placeholder="Enter Password">
                         </div>
                         <div class="form-group">
                             <label for="pass">New Password</label>
@@ -78,6 +78,9 @@ if (isset($_POST['change'])) {
                 <script src="js/jquery.min.js"></script>
                 <script src="js/popper.min.js"></script>
                 <script src="js/bootstrap.min.js"></script>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

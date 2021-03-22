@@ -87,7 +87,7 @@ include './booked_insert.php';
 			<?php
 			$pid = intval($_GET['pkgid']);
 			$ptype = $_GET['ptype'];
-			$sql = "SELECT p.*,pd.* from packages p,package_details pd where p.p_id=pd.p_id and p.p_id ='$pid'";
+			$sql = "SELECT p.* from packages p where p.p_id ='$pid'";
 			$query = mysqli_query($conn, $sql);
 			$cnt = 1;
 

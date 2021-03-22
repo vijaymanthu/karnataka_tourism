@@ -57,11 +57,10 @@
                     $insert_dist = mysqli_query($conn, "Insert into district(dist_name) values ('$distname')");
                 }
 
-                $sql = "INSERT INTO `packages`(`pname`, `description`, `price`,`no_of_days`,`district_id`,`ptype`) VALUES ('$pname','$desc','$price','$nod','$dist','$ptype')";
+                $sql = "INSERT INTO `packages`(`pname`, `description`, `price`,`no_of_days`,`district_id`,`ptype`,`about`) VALUES ('$pname','$desc','$price','$nod','$dist','$ptype','$about')";
                 $res = mysqli_query($conn, $sql);
                 if ($res) {
                     $temp_id = mysqli_insert_id($conn);
-                    $sql2 = "Select no_of_places from package_details where p_id='$temp_id'";
                     for ($i = 1; $i <= $nop; $i++) {
                         $file =
                             $_FILES["image$i"]['name'];
@@ -88,10 +87,8 @@
                         }
                     }
 
-                    $sql3 = "INSERT INTO `package_details`(`p_id`, `no_of_places`, `name_place`, `images`, `about_package`) VALUES ('$temp_id','$nop','$place_name','$filepaths','$about') ";
-                    $result = mysqli_query($conn, $sql3);
 
-                    if ($f && $result)
+                    if ($f)
                         echo "<script>alert('Package added Successfully')</script>";
                     else
                         echo "<script>alert('Package not Added')</script>";
@@ -140,8 +137,25 @@
                             <div class="row">
                                 <div class="col ">
                                     <label for="dist_name" class="col-form-label "> District Name</label>
-                                    <input type=" text" class="form-control" name="dist_name" id="dist_name">
+                                    <select class="form-control" required name="dist_name" id="dist_name">
+                                        <option value="" selected>SELECT District</option>
+                                        <?php
+                                        $dist = mysqli_query($conn, "SELECT * from district");
+                                        if (mysqli_num_rows($dist) > 0) {
+                                            while ($row = $dist->fetch_assoc()) {
+                                        ?><option value="<?php echo $row['id'] ?>"><?php echo $row['dist_name'] ?></option>
+
+                                        <?php
+
+                                            }
+                                        } ?>
+                                        <option value="others">Others</option>
+                                    </select>
+                                    <div class="col">
+                                        <input type="text" class="form-control " hidden name="text_dist_name" id="text_dist_name">
+                                    </div>
                                 </div>
+
                             </div>
                             <div class="row">
                                 <div class="col">
@@ -159,6 +173,12 @@
                                 <div class="col ">
                                     <label for="p_price" class="col-form-label "> Price</label>
                                     <input type=" text" class="form-control" name="p_price" id="p_price">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col ">
+                                    <label for="nod" class="col-form-label "> No of Days</label>
+                                    <input type="number" class="form-control" name="nod" id="nod">
                                 </div>
                             </div>
                             <div class="row">
@@ -328,6 +348,13 @@
 
     <script>
         $(function() {
+            $('#dist_name').change(function() {
+                if ($(this).val() == "others") {
+                    $('#text_dist_name').prop('hidden', false)
+                } else {
+                    $('#text_dist_name').prop('hidden', true)
+                }
+            });
             $('#district').prop("disabled", true);
             $('#nop').change(function() {
 
@@ -378,7 +405,10 @@
                 e.preventDefault();
                 var dist_name = $('#dist_name').val();
                 var p_type = $('#p_type').val();
-                var price = $('#p_price').val()
+                var price = $('#p_price').val();
+                var nod = $('#nod').val();
+                var text_dist_name = $('#text_dist_name').val();
+                console.log(text_dist_name);
                 console.log(dist_name + p_type)
                 if (dist_name != "" ||
                     p_type != "" ||
@@ -390,7 +420,9 @@
                             operation: "add_district",
                             dist_name: dist_name,
                             price: price,
-                            p_type: p_type
+                            p_type: p_type,
+                            nod: nod,
+                            text_dist_name: text_dist_name
 
                         },
                         success: function(data) {
