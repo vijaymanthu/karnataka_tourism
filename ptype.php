@@ -36,7 +36,7 @@ if (mysqli_num_rows($query) > 0) {
                             echo "./uploads/images/$ptype/" . $imagepath['image'] ?>" class="img-responsive" alt="adfgd">
             </div>
             <div class="col-md-6 room-midle wow fadeInUp animated" data-wow-delay=".5s">
-                <h4>Package Name: <?php echo $dist_id . "" . htmlentities($result['pname']);
+                <h4>Package Name: <?php htmlentities($result['pname']);
 
                                     ?></h4>
                 <!-- <h6>Package Type : <?php echo htmlentities($result['PackageType']); ?></h6> -->

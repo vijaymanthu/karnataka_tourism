@@ -3,7 +3,7 @@ session_start();
 if (isset($_POST['login'])) {
 
 	$email = $_POST['email_id'];
-	$pass = $_POST['pass'];
+	$pass = $_POST['password'];
 	$sql = "Select * from register where email_id='$email' and password = '$pass'";
 	$res = mysqli_query($conn, $sql);
 	if (mysqli_num_rows($res) > 0) {
