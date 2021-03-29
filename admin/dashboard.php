@@ -152,8 +152,8 @@
                         <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
                     </div>
                     <div class="four-text">
-                        <h3>Issues Riaised</h3>
-                        <?php $sql5 = "SELECT id from tblissues";
+                        <h3>feedbacks</h3>
+                        <?php $sql5 = "SELECT id from feedback";
                         $query5 = $dbh->prepare($sql5);
                         $query5->execute();
                         $results5 = $query5->fetchAll(PDO::FETCH_OBJ);

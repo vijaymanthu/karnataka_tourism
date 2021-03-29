@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary ">
     <div class="container">
-        <a class="navbar-brand" href="#">KARNATAKA TOURISM </a>
+        <a class="navbar-brand" href="#"><strong>KARNATAKA TOURISM</strong> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -17,11 +17,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" id="submenu" href="./tour_packages.php">Tour Packages</a>
-                        <a class="dropdown-item" id="submenu" href="./ticket_booking.php">Ticket Booking</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Users</a>
+                    <a class="nav-link" href="user.php">Users</a>
 
                 </li>
                 <li class="nav-item">

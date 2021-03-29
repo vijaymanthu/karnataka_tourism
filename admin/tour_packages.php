@@ -292,14 +292,13 @@
             </form>
         </div>
         <div id="add_places" class="tab-pane fade">
-            <p style="text-align:center" class="text-uppercase text-secondary h4">Manage packages</p>
+            <p style="text-align:center" class="text-uppercase text-secondary h4">View packages</p>
             <div class="table-responsive">
                 <table class="table m-2" id="table">
                     <thead class="thead-dark">
                         <tr>
                             <th>Sl No</th>
                             <th>Name</th>
-                            <th>Location</th>
                             <th>Price</th>
                             <th>Description</th>
                             <th></th>
@@ -317,10 +316,12 @@
                                 <tr>
                                     <td><?php echo htmlentities($cnt); ?></td>
                                     <td><?php echo htmlentities($result['pname']); ?></td>
-                                    <td><?php echo htmlentities($result['PackageLocation']); ?></td>
-                                    <td><?php echo htmlentities($result['price']); ?></td>
-                                    <td><?php echo htmlentities($result['description']); ?></td>
-                                    <td><a href="update-package.php?pid=<?php echo htmlentities($result['p_id']); ?>"><button type="button" class="btn btn-primary">View Details</button></a></td>
+                                    <td><?php  
+                                    $dist = mysqli_query($conn, "SELECT * from district_package_details where p_type='".$result['ptype']."' and  dist_id = '".$result['district_id']."'");
+                                    $d = $dist -> fetch_assoc();
+                                    echo htmlentities($d['price']); ?></td>
+                                    <td><?php echo htmlentities($result['about']); ?></td>
+                                    <td><a href="delete_package.php?pid=<?php echo htmlentities($result['p_id']); ?>"><button type="button" class="btn btn-primary">DELETE</button></a></td>
                                 </tr>
                         <?php $cnt = $cnt + 1;
                             }
