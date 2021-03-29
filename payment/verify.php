@@ -9,7 +9,7 @@
 <?php
 require('.././includes/db.php');
 require('config.php');
-
+require '.././phpsms/sms.php';
 session_start();
 
 require('razorpay-php/Razorpay.php');
@@ -44,6 +44,7 @@ if (empty($_POST['razorpay_payment_id']) === false) {
 if ($success === true) {
     $update_booking = mysqli_query($conn, "update tblbooking set status='confirmed'");
     $_SESSION['msg'] = "Booked Successfully";
+    sendsms($_SESSION['mobile_no'], $_SESSION['name']);
     $html = "<script>
      window.location = '../index.php';
       

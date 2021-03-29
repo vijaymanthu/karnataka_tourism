@@ -3,7 +3,7 @@
 		<div class="container">
 			<ul class="tp-hd-lft wow fadeInLeft animated" data-wow-delay=".5s">
 				<li class="hm"><a href="index.html"><i class="fa fa-home"></i></a></li>
-				<li class="prnt"><a href="profile.php">My Profile</a></li>
+				<li class="prnt"><a href="#">My Profile</a></li>
 				<li class="prnt"><a href="cplogin.php">Change Password</a></li>
 				<li class="prnt"><a href="tour-history.php">My Tour History</a></li>
 			</ul>

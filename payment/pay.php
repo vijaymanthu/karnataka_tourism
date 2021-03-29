@@ -16,15 +16,17 @@ if (isset($_POST['submit2'])) {
     $date = $_POST['date'];
     $dst_id = $_POST['dist_id'];
     $ptype = $_POST['ptype'];
+    $p_id = $_POST['p_id'];
     $res = mysqli_query($conn, "SELECT fname,lname,mobile_no from register where email_id ='" . $_SESSION['email'] . "'");
     $fetch_name = $res->fetch_assoc();
     $name = $fetch_name['fname'] . " " . $fetch_name['lname'];
     $mobile = $fetch_name['mobile_no'];
     $reg_date = date("Y-m-d");
 
-    $sql = "INSERT INTO `tblbooking`(`District_Id`, `UserEmail`,`TripDate`, `status`) VALUES ('$dst_id','$email','$date','registerd')";
+    $sql = "INSERT INTO `tblbooking`(`District_Id`, `UserEmail`,`TripDate`, `status`,`P_id`) VALUES ('$dst_id','$email','$date','registerd','$p_id')";
     $insert = mysqli_query($conn, $sql);
-
+    $_SESSION['name'] = $name;
+    $_SESSION['mobile_no'] = $mobile;
 
     if (!$insert)
         echo "<script>alert('not inserted')</script>";

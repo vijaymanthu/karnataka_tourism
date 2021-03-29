@@ -70,6 +70,8 @@ if (strlen($_SESSION['login']) == 0) {
 		<!--animate-->
 		<link href="css/animate.css" rel="stylesheet" type="text/css" media="all">
 		<script src="js/wow.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 		<script>
 			new WOW().init();
 		</script>
@@ -96,6 +98,14 @@ if (strlen($_SESSION['login']) == 0) {
 	</head>
 
 	<body>
+		<?php
+		if (isset($_SESSION['feedback'])) {
+			echo "<script>
+		Swal.fire('" . $_SESSION['feedback'] . "');
+		</script>";
+			unset($_SESSION['feedback']);
+		}
+		?>
 		<!-- top-header -->
 		<div class="top-header">
 			<?php include('includes/header.php'); ?>
@@ -109,7 +119,7 @@ if (strlen($_SESSION['login']) == 0) {
 					<?php
 					$email = $_SESSION['login'];
 					$c = 1;
-					$sql = "SELECT * FROM tblbooking b,packages p,district d,district_package_details det where d.id=det.dist_id and p.district_id = d.id and b.District_Id = p.district_id and b.UserEmail='$email' and det.p_type = p.ptype";
+					$sql = "SELECT * FROM tblbooking b,packages p,district d,district_package_details det where d.id=det.dist_id and p.district_id = d.id and b.District_Id = p.district_id and b.UserEmail='$email' and det.p_type = p.ptype and b.p_id = p.p_id";
 					$booking_fetch = mysqli_query($conn, $sql);
 					if (mysqli_num_rows($booking_fetch) > 0) {
 					?>
@@ -124,58 +134,111 @@ if (strlen($_SESSION['login']) == 0) {
 								<th>Status</th>
 								<th>Price</th>
 								<th>No of Days</th>
+								<th>Feedback</th>
 							</thead>
 							<tbody>
 
 								<?php
+								$temp = "";
 								while ($row = $booking_fetch->fetch_assoc()) {
 									$d = $row['district_id'];
-								?>
-									<tr>
-										<td><?php echo $c++ ?></td>
 
-										<td><?php echo htmlentities($row['BookingId']) ?></td>
-										<td><?php
-											// $dstname = mysqli_query($conn, "SELECT * from district where id='$d'");
-											//$fd = $dstname->fetch_assoc();
-											echo $row['dist_name'];
-											?></td>
-										<td><?php echo htmlentities($row['p_type']) ?></td>
-										<td><?php echo htmlentities($row['TripDate']) ?></td>
-										<td><?php echo htmlentities($row['status']) ?></td>
-										<?php
-										?><td><?php echo htmlentities($row['price']) ?></td>
-										<td><?php echo htmlentities($row['no_of_days']) ?></td>
-									</tr>
-									<!-- <td><a href="" class="btn btn-danger">Cancel Booking</a></td> -->
-								<?php
+								?>
+									<form method="post" action="feedback.php">
+										<input type="hidden" value="<?php echo $d ?>" id="d_id" name="d_id">
+										<input type="hidden" value="<?php echo htmlentities($row['p_type']) ?>" id="p_type" name="p_type">
+										<input type="hidden" value="<?php echo htmlentities($row['BookingId']) ?>" name="book_id" id="booking_id">
+										<input type="hidden" value="<?php echo $email ?>" name="email" id="user_id">
+										<tr>
+											<td><?php echo $c++ ?></td>
+
+											<td><?php $temp = htmlentities($row['BookingId']);
+												echo $temp ?></td>
+											<td><?php
+												// $dstname = mysqli_query($conn, "SELECT * from district where id='$d'");
+												//$fd = $dstname->fetch_assoc();
+												echo $row['dist_name'];
+												?></td>
+											<td><?php echo htmlentities($row['p_type']) ?></td>
+											<td><?php echo htmlentities($row['TripDate']) ?></td>
+											<td><?php echo htmlentities($row['status']) ?></td>
+											<?php
+											?><td><?php echo htmlentities($row['price']) ?></td>
+											<td><?php echo htmlentities($row['no_of_days']) ?></td>
+											<!-- <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
+											<td><button class="btn btn-outline-primary btn-sm" type="submit"><i class="far fa-comment fa-2x"></i>Review</button></td>
+
+				</div>
+				</tr>
+				</form>
+				<!-- <td><a href="" class="btn btn-danger">Cancel Booking</a></td> -->
+			<?php
 
 								}
 
 
-								?>
-							</tbody>
-						</table>
-					<?php
+			?>
+			</tbody>
+			</table>
+		<?php
 
 					} else {
 						echo "<p>No Booking Available</p>";
 					}
-					?>
-				</div>
+		?>
 			</div>
-			<!--- /privacy ---->
-			<!--- footer-top ---->
-			<!--- /footer-top ---->
-			<?php include('includes/footer.php'); ?>
-			<!-- signup -->
-			<?php include('includes/signup.php'); ?>
-			<!-- //signu -->
-			<!-- signin -->
-			<?php include('includes/signin.php'); ?>
-			<!-- //signin -->
-			<!-- write us -->
-			<?php include('includes/write-us.php'); ?>
+		</div>
+		<script>
+			$(document).on('click', '#close', function(e) {
+
+				$('#form').modal('hide');
+			});
+			$(document).on('click', '#send', function(e) {
+				e.preventDefault();
+				var $el = $(this).closest('tr');
+				var d_id = $('#d_id').val();
+				var p_type = $('#p_type').val();
+				var rate = $("input[name='rating']:checked").val();
+				var comment = $('#comment').val();
+				var email = $('#user_id').val();
+				var booking_id = $('.booking_id').val();
+				console.log(booking_id);
+				$('#form').modal('hide');
+				// $.ajax({
+				// 	url: 'feedback.php',
+				// 	type: 'post',
+				// 	dataType: 'json',
+				// 	data: {
+				// 		d_id: d_id,
+				// 		p_type: p_type,
+				// 		rating: rate,
+				// 		comment: comment,
+				// 		book_id: booking_id,
+				// 		email: email
+
+				// 	},
+				// 	success: function(data) {
+				// 		if (data['responce'] == "success") {
+				// 			console.log("success");
+				// 		}
+				// 	}
+				// })
+
+
+			})
+		</script>
+		<!--- /privacy ---->
+		<!--- footer-top ---->
+		<!--- /footer-top ---->
+		<?php include('includes/footer.php'); ?>
+		<!-- signup -->
+		<?php include('includes/signup.php'); ?>
+		<!-- //signu -->
+		<!-- signin -->
+		<?php include('includes/signin.php'); ?>
+		<!-- //signin -->
+		<!-- write us -->
+		<?php include('includes/write-us.php'); ?>
 	</body>
 
 	</html>

@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/db.php');
+
 ?>
 <!DOCTYPE HTML>
 <html>

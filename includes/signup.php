@@ -23,6 +23,7 @@ if (isset($_POST['save'])) {
 		$sql = "insert into register(fname,lname,mobile_no,password,email_id) values('$fname','$lname','$mobile_no','$pass','$email')";
 		$res = mysqli_query($conn, $sql);
 		if ($res) {
+			$sent = sendsms("Thank you for showing Intrest in Tourism",$mobile_no);
 			echo "<script>Swal.fire({
   position: 'top',
   icon: 'success',

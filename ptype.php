@@ -5,7 +5,7 @@ include('includes/db.php');
 
 $dist_id = $_POST['dist_id'];
 $ptype = $_POST['ptype'];
-
+$p_id = "";
 
 
 $sql = "SELECT * from packages where ptype='$ptype' and district_id='$dist_id'";
@@ -36,7 +36,7 @@ if (mysqli_num_rows($query) > 0) {
                             echo "./uploads/images/$ptype/" . $imagepath['image'] ?>" class="img-responsive" alt="adfgd">
             </div>
             <div class="col-md-6 room-midle wow fadeInUp animated" data-wow-delay=".5s">
-                <h4>Package Name: <?php htmlentities($result['pname']);
+                <h4>Package Name: <?php echo htmlentities($result['pname']);
 
                                     ?></h4>
                 <!-- <h6>Package Type : <?php echo htmlentities($result['PackageType']); ?></h6> -->
@@ -56,8 +56,10 @@ if (mysqli_num_rows($query) > 0) {
     <form name="book" action="./payment/pay.php" method="post">
         <input type="hidden" name="pname" value="<?php echo htmlentities($result['pname']); ?>">
         <input type="hidden" name="price" value="<?php echo htmlentities($pack_price['price']); ?>">
-        <input type="hidden" name="dist_id" value="<?php echo $_POST['dst_id']; ?>">
-        <input type="hidden" name="ptype" value="<?php echo $_POST['ptype']; ?>">
+        <input type="hidden" name="dist_id" value="<?php echo $dist_id ?>">
+        <input type="hidden" name="ptype" value="<?php echo $ptype ?>">
+        <input type="hidden" name="p_id" value="<?php echo $p_id ?>">
+
         <div class="selectroom_top" style="margin: 30px;">
             <h2>Travel</h2>
             <div class="selectroom-info animated wow fadeInUp animated" data-wow-duration="1200ms" data-wow-delay="500ms" style="visibility: visible; animation-duration: 1200ms; animation-delay: 500ms; animation-name: fadeInUp; margin-top: -70px">
