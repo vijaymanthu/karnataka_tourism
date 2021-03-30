@@ -24,11 +24,11 @@
 
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">View Cancellation</a>
+                    <a class="nav-link" href="customer_feedbacks.php">View Feedback</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#">E-Payment</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="../logout.php">Logout</a>
                 </li>
